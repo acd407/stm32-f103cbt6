@@ -14,7 +14,7 @@
                 ".vscode/stlink.cfg",
                 ".vscode/stm32f1x.cfg"
             ],
-            "executable": "build/init.elf",
+            "executable": "build/main.elf",
             "runToEntryPoint": "main",
             "svdFile": ".vscode/STM32F103xx.svd"
         }

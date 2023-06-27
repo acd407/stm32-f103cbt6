@@ -1,3 +1,4 @@
+extern "C" {
 void _exit() {}
 void _kill() {}
 void _getpid() {}
@@ -19,3 +20,4 @@ void _write() {}
  */
 void _init() {}
 void _fini() {}
+}

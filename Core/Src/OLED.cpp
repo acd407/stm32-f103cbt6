@@ -165,7 +165,27 @@ void OLED_ShowStrings (uint8_t Line, uint8_t Column, const char *str) {
     }
 }
 
-static std::string trim (std::string s, char c) {
+/**
+ * @brief  删除字符串头部匹配的字符
+ * @param  s 要操作的字符串
+ * @param  c 待删的字符
+ * @retval 删除后的字符串，注意，不是引用
+ */
+string triml (string s, char c) {
+    if (s.empty()) {
+        return s;
+    }
+    s.erase (0, s.find_first_not_of (c));
+    return s;
+}
+
+/**
+ * @brief  删除字符串首尾匹配的字符
+ * @param  s 要操作的字符串
+ * @param  c 待删的字符
+ * @retval 删除后的字符串，注意，不是引用
+ */
+string trim (string s, char c) {
     if (s.empty()) {
         return s;
     }
@@ -174,6 +194,42 @@ static std::string trim (std::string s, char c) {
     return s;
 }
 
+/**
+ * @brief  删除字符串头部匹配的字符
+ * @param  s 要操作的字符串
+ * @param  c 待删的字符
+ * @retval 删除后的字符串，注意，原字符串很可能还有用，比如 free
+ */
+const char *triml (const char *s, char c) {
+    if (s != NULL && strlen (s) > 0) {
+        while (*s == c) {
+            s++;
+        }
+    }
+    return s;
+}
+
+/**
+ * @brief  删除字符串首尾匹配的字符
+ * @param  s 要操作的字符串
+ * @param  c 待删的字符
+ * @retval 删除后的字符串，注意，原字符串很可能还有用，比如 free
+ */
+char *trim (char *s, char c) {
+    if (s != NULL && strlen (s) > 0) {
+        while (*s == c) {
+            s++;
+        }
+    }
+    return s;
+}
+
+/**
+ * @brief  计算 Number 在 n 进制作为字符串存储需要多少位
+ * @param  Number 数
+ * @param  n 进制
+ * @retval 位数
+ */
 constexpr uint32_t count_digits (uint32_t Number, uint32_t n) {
     return Number == 0
                ? 1
@@ -183,45 +239,16 @@ constexpr uint32_t count_digits (uint32_t Number, uint32_t n) {
 /**
  * @brief  OLED数字转字符串（十进制，无符号数）
  * @param  Number 要显示的数字，范围：0 ~ 4294967295
- * @retval 格式化后的字符串
- */
-string OLED_FMT_UDEC_A (uint32_t Number) {
-    string s;
-    s.reserve (10);
-    while (Number) {
-        s.push_back (Number % 10 + '0');
-        Number /= 10;
-    }
-    reverse (s.begin(), s.end());
-    return s;
-}
-
-/**
- * @brief  OLED数字转字符串（十进制，有符号数）
- * @param  Number 要显示的数字，范围：-2147483648 ~ 2147483647
- * @retval 格式化后的字符串
- */
-string OLED_FMT_DEC_A (int32_t Number) {
-    if (Number >= 0) {
-        return OLED_FMT_UDEC_A (Number);
-    } else {
-        return OLED_FMT_UDEC_A (-Number).insert (0, "-");
-    }
-}
-
-/**
- * @brief  OLED数字转字符串（十进制，无符号数）
- * @param  Number 要显示的数字，范围：0 ~ 4294967295
  * @retval 格式化后的字符串，前面填充 0
  */
-string OLED_FMT_UDEC (uint32_t Number) {
+const char *OLED_FMT_UDEC (uint32_t Number) {
     auto i = 10;
     string s (i, '0');
     while (Number) {
         s[--i] = (Number % 10 + '0');
         Number /= 10;
     }
-    return s;
+    return s.c_str();
 }
 
 /**
@@ -229,11 +256,11 @@ string OLED_FMT_UDEC (uint32_t Number) {
  * @param  Number 要显示的数字，范围：-2147483648 ~ 2147483647
  * @retval 格式化后的字符串，和 OLED_FMT_DEC_A 行为一样
  */
-string OLED_FMT_DEC (int32_t Number) {
+const char *OLED_FMT_DEC (int32_t Number) {
     if (Number >= 0) {
-        return trim (OLED_FMT_UDEC (Number), '0');
+        return trim (OLED_FMT_UDEC (Number), '0').c_str();
     } else {
-        return trim (OLED_FMT_UDEC (Number), '0').insert (0, "-");
+        return trim (OLED_FMT_UDEC (Number), '0').insert (0, "-").c_str();
     }
 }
 
@@ -242,14 +269,14 @@ string OLED_FMT_DEC (int32_t Number) {
  * @param  Number 要显示的数字，范围：0 ~ FFFF FFFF
  * @retval 格式化后的字符串，前面填充 0
  */
-string OLED_FMT_HEX (uint32_t Number) {
+const char *OLED_FMT_HEX (uint32_t Number) {
     auto i = 8;
     string s (i, '0');
     while (Number) {
         s[--i] = (Number % 16 + '0');
         Number >>= 4;
     }
-    return s;
+    return s.c_str();
 }
 
 /**
@@ -257,14 +284,14 @@ string OLED_FMT_HEX (uint32_t Number) {
  * @param  Number 要显示的数字，范围：0 ~ 0377 7777 7777
  * @retval 格式化后的字符串，前面填充 0
  */
-string OLED_FMT_OCT (uint32_t Number) {
+const char *OLED_FMT_OCT (uint32_t Number) {
     auto i = 11;
     string s (i, '0');
     while (Number) {
         s[--i] = (Number % 8 + '0');
         Number >>= 3;
     }
-    return s;
+    return s.c_str();
 }
 
 /**
@@ -272,14 +299,14 @@ string OLED_FMT_OCT (uint32_t Number) {
  * @param  Number 要显示的数字，范围：0 ~ 1<<32-1
  * @retval 格式化后的字符串，前面填充 0
  */
-string OLED_FMT_BIN (uint32_t Number) {
+const char *OLED_FMT_BIN (uint32_t Number) {
     auto i = 32;
     string s (i, '0');
     while (Number) {
         s[--i] = (Number % 2 + '0');
         Number >>= 1;
     }
-    return s;
+    return s.c_str();
 }
 
 /**
