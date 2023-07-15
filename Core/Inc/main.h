@@ -31,6 +31,11 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <gpio.h>
+#include <i2c.h>
+#include <stm32f1xx_hal_uart.h>
+#include <usart.h>
+
 
 /* USER CODE END Includes */
 
@@ -46,11 +51,15 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+#ifdef __cplusplus
+    #define NORETURN [[noreturn]]
+#else
+    #define NORETURN _Noreturn
+#endif
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler (void);
+void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 void mainxx (void);
