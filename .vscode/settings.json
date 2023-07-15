@@ -10,7 +10,6 @@
         "cstdint": "cpp"
     },
     "clangd.arguments": [
-        "--query-driver=/usr/sbin/arm-none-eabi-*"
-    ],
-    "clangd.path": "/usr/bin/clangd",
+        "--query-driver=/usr/bin/arm-none-eabi-*"
+    ]
 }
