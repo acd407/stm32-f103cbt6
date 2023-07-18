@@ -16,7 +16,7 @@ AlwaysBreakTemplateDeclarations: Yes
 # namespace 加 Tab
 NamespaceIndentation: All
 # 预处理缩进
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: None 
 # 指针的位置
 PointerAlignment: Right
 # 连续宏对齐
