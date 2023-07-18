@@ -23,6 +23,7 @@
 #include "i2c.h"
 #include "usart.h"
 
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -77,7 +78,7 @@ int main (void) {
     HAL_Init();
 
     /* USER CODE BEGIN Init */
-    
+
     /* USER CODE END Init */
 
     /* Configure the system clock */
