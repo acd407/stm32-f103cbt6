@@ -221,16 +221,18 @@ w: write
 #######################################
 # get memory and flash size
 #######################################
-sizes: all
-	@arr=(`$(PREFIX)size $(BUILD_DIR)/$(TARGET).elf | sed -n '2p'`); \
-	let flash=($${arr[0]}+$${arr[1]}); \
-	let mem=($${arr[1]}+$${arr[2]}); \
-	let flash_size=128*1024; \
-	let mem_size=20*1024; \
-	flash_usage=`echo "scale=2; a=$$flash*100/$$flash_size; if (length(a)==scale(a)) print 0;print a "|bc`;\
-	mem_usage=`echo "scale=2; a=$$mem*100/$$mem_size; if (length(a)==scale(a)) print 0;print a "|bc`;\
-	echo ""; \
-	echo "Flash: $$flash / $$flash_size bytes, $$flash_usage% Full (.text + .data)"; \
+.ONESHELL:
+.SILENT:
+sizes:
+	arr=(`$(PREFIX)size $(BUILD_DIR)/$(TARGET).elf | sed -n '2p'`)
+	let flash=($${arr[0]}+$${arr[1]})
+	let mem=($${arr[1]}+$${arr[2]})
+	let flash_size=128*1024
+	let mem_size=20*1024
+	flash_usage=`echo "scale=2; a=$$flash*100/$$flash_size;print a "|bc`
+	mem_usage=`echo "scale=2; a=$$mem*100/$$mem_size;print a "|bc`
+	echo ""
+	echo "Flash: $$flash / $$flash_size bytes, $$flash_usage% Full (.text + .data)"
 	echo "SRAM:  $$mem / $$mem_size bytes, $$mem_usage% Full (.data + .bss)"
 s: sizes
 
