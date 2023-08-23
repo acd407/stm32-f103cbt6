@@ -32,9 +32,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <gpio.h>
-#include <i2c.h>
 #include <stm32f1xx_hal_uart.h>
-#include <usart.h>
 
 
 /* USER CODE END Includes */
